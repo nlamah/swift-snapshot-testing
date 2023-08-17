@@ -853,7 +853,13 @@ extension View {
                 return
               }
               wkWebView.takeSnapshot(with: nil) { image, _ in
-                callback(image!)
+                  let configuaration = WKSnapshotConfiguration()
+                  if #available(iOS 13, macOS 10.15, *) {
+                      configuaration.afterScreenUpdates = false
+                  }
+                  wkWebView.takeSnapshot(with: configuaration) { image, _ in
+                      callback(image!)
+                  }
               }
             }
           } else {
